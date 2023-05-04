@@ -57,40 +57,22 @@ void Board::printBoard()
             switch (p)
             {
             case KING:
-                if (c == WHITE)
-                    cout << "K";
-                else
-                    cout << "k";
+                (c == WHITE) ? cout << "K" : cout << "k";
                 break;
             case QUEEN:
-                if (c == WHITE)
-                    cout << "Q";
-                else
-                    cout << "q";
+                (c == WHITE) ? cout << "Q" : cout << "q";
                 break;
             case BISHOP:
-                if (c == WHITE)
-                    cout << "B";
-                else
-                    cout << "b";
+                (c == WHITE) ? cout << "B" : cout << "b";
                 break;
             case KNIGHT:
-                if (c == WHITE)
-                    cout << "H";
-                else
-                    cout << "h";
+                (c == WHITE) ? cout << "H" : cout << "h";
                 break;
             case ROOK:
-                if (c == WHITE)
-                    cout << "R";
-                else
-                    cout << "r";
+                (c == WHITE) ? cout << "R" : cout << "r";
                 break;
             case PAWN:
-                if (c == WHITE)
-                    cout << "P";
-                else
-                    cout << "p";
+                (c == WHITE) ? cout << "P" : cout << "p";
                 break;
             case EMPTY:
                 cout << " \21 ";
