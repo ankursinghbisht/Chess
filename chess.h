@@ -18,6 +18,8 @@ class Square
     int x, y;
 
 public:
+
+
     void setSpace(Square*);
     void setEmpty();
     void setpieceAndColor(Piece, Color);
@@ -60,6 +62,7 @@ class Board
     void printBoard();
 
 public:
+
     Square* getSquare(int x, int y)
     {
         return &sq[x][y];
