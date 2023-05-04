@@ -51,8 +51,8 @@ void Board::printBoard()
         cout << " " << i << " ";
         for (int j = 0;j < 8;++j)
         {
-            Piece p = Square[i][j].getPiece();
-            Color c = Square[i][j].getColor();
+            Piece p = sq[i][j].getPiece();
+            Color c = setSquare[i][j].getColor();
 
             switch (p)
             {
@@ -140,3 +140,59 @@ bool Board::doMove()
     return true;
 
 }
+
+//code to set initial pieces while starting the game
+
+void Board::setBoard()
+{
+    //Setting up white & black pieces
+    sq[0][0].setPieceAndColor(ROOK, WHITE);
+    sq[1][0].setPieceAndColor(KNIGHT, WHITE);
+    sq[2][0].setPieceAndColor(BISHOP, WHITE);
+    sq[3][0].setPieceAndColor(QUEEN, WHITE);
+    sq[4][0].setPieceAndColor(KING, WHITE);
+    sq[5][0].setPieceAndColor(BISHOP, WHITE);
+    sq[6][0].setPieceAndColor(KNIGHT, WHITE);
+    sq[7][0].setPieceAndColor(ROOK, WHITE);
+
+    sq[0][7].setPieceAndColor(ROOK, BLACK);
+    sq[1][7].setPieceAndColor(KNIGHT, BLACK);
+    sq[2][7].setPieceAndColor(BISHOP, BLACK);
+    sq[3][7].setPieceAndColor(QUEEN, BLACK);
+    sq[4][7].setPieceAndColor(KING, BLACK);
+    sq[5][7].setPieceAndColor(BISHOP, BLACK);
+    sq[6][7].setPieceAndColor(KNIGHT, BLACK);
+    sq[7][7].setPieceAndColor(ROOK, BLACK);
+
+    for (int i = 0; i < 8; i++)
+    {
+        sq[i][1].setPieceAndColor(PAWN, WHITE);
+        sq[i][6].setPieceAndColor(PAWN, BLACK);
+    }
+
+    //setting up empty spaces
+    for (int i = 2;i < 6;++i)
+    {
+        for (int j = 0;j < 8;++j)
+            sq[j][i].setpieceAndColor(EMPTY, NONE);
+    }
+
+    //defining location of each piece in Board class instance
+    for (int i = 0;i < 8;++i)
+    {
+        for (int j = 0;j < 8;++j)
+        {
+            sq[i][j].setX(i);
+            sq[i][j].setY(j);
+        }
+    }
+}
+
+//defining playgame function to print board with each round of play 
+bool Board::playGame()
+{
+    system("cls");
+    printBoard();
+    return doMove();
+}
+
