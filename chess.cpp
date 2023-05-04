@@ -52,7 +52,7 @@ void Board::printBoard()
         for (int j = 0;j < 8;++j)
         {
             Piece p = sq[i][j].getPiece();
-            Color c = setSquare[i][j].getColor();
+            Color c = sq[i][j].getColor();
 
             switch (p)
             {
@@ -196,3 +196,87 @@ bool Board::playGame()
     return doMove();
 }
 
+
+//defining movements of each pieces individually
+
+bool Board::moveKing(Square* thisKing, Square* thatSpace)
+{
+    //checks if difference between start & end point should be less than or equal to 2
+    // as king can't move more than one step in horizonally, vertically or diagonally
+    if (abs(thatSpace->getX() - thisKing->getX()) <= 1)
+    {
+        if (abs(thatSpace->getY() - thisKing->getY()) <= 1)
+        {
+            //setting new position if valid move
+            thatSpace->setSpace(thisKing);
+            thisKing->setEmpty();
+            return true;
+        }
+        else
+            return false;
+    }
+    else
+        return false;
+}
+
+bool Board::moveQueen(Square* thisQueen, Square* thatspace)
+{
+    //it checks if position passed are valid position w.r.t to actual chess rules
+    //ie. queen can move any number of positions  vertically, horizontally or diagonally unless path is obstructed. 
+    int queenX = thisQueen->getX(), queenY = thisQueen->getY(), thatX = thatSpace->getX(), thatY = thatSpace->getY();
+    int yIcrement, int xIncrement;
+
+    bool invalid = false;
+    // this checks if queen is ordered to go in straight line in horizontal axis, 
+    //then step by step moving queen and checking if path is clear, else returned false
+    if (queenX != thatX || queenY != thatY)
+    {
+        yIcrement = (thatY - queenY) / (abs(thatY - queenY));
+        for (int i = queenY + yIcrement;i != thatY;i += yIcrement)
+        {
+            if (sq[thatX][i].getColor() != NONE)
+                return false;
+        }
+    }
+    else
+    {
+        //same check as above is done , but with vertical axis
+        if (queenY == thatY)
+        {
+            xIncrement = (thatX - queenX) / abs(thatX - queenX);
+            for (int i = queenX + xIncrement;i != thatX;i += xIncrement)
+            {
+                if (sq[i][thatY].getColor() != NONE)
+                    return false;
+            }
+        }
+        else
+        {
+            //path check is done for diagonal movements.
+            if (abs(queenX - thatX) == abs(queenY - thatY))
+            {
+                xIncrement = (thatX - queenX) / (abs(thatX - queenX));
+                yIncrement = (thatY - queenY) / (abs(thatY - queenY));
+
+                for (int i = 1;i < abs(queenX - thatX);++i)
+                {
+                    if (sq[queenX + xIncrement * i][queenY + yIcrement * i].getColor() != NONE)
+                        return false;
+                }
+            }
+        }
+        else
+            return false;
+    }
+
+    //setting new position if valid move
+    if (!invalid)
+    {
+        thatspace->setSpace(thisQueen);
+        thisQueen->setEmpty();
+        return true;
+    }
+    else
+        return false;
+
+}
