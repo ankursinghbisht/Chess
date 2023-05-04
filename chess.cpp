@@ -40,7 +40,7 @@ void Square::setpieceAndColor(Piece p, Color c)
 }
 
 
-//defining class Board's function body
+//defining printboard, to print the board wrt to the current location of pieces stored in matrix names Square
 
 void Board::printBoard()
 {
@@ -85,5 +85,58 @@ void Board::printBoard()
         }
         cout << "\n";
     }
+
+}
+
+//defining doMove function to accept user input to move one piece at at time & checking if move mentioned is possible or not
+bool Board::doMove()
+{
+    int x1, x2, y1, y2;
+    bool stop = false;
+
+    while (!stop)
+    {
+        if (turn == WHITE)
+            cout << "White's turn\n";
+        else
+            cout << "Black's turn\n";
+
+        cout << "Type your move as 4 individual numbers consisting co-ordinates of Piece you want to move , following it's target location \n";
+        cout << "Example if a pawn is at location (0,1) & we want to move it to (0,2), type 0 1 0 2\n";
+        cin >> x1 >> y1 >> x2 >> y2;
+
+        if (getSquare(x1, y1)->getColor() == turn)
+        {
+            if (makeMove(x1, y1, x2, y2) == false)
+                cout << "Invalid move, Try again.\n";
+            else
+                stop = true;
+        }
+        else
+            cout << "That's an invalid Piece to move. Please try again\n";
+    }
+
+    /*input is taken, and here we check if piece directly attacks the kingif yes, game is won by the attacker
+    (this isn't acutal rule of chess, this is initial phase of testing of proper functioning of chess game.)*/
+    if (getSquare(x2, y2)->getPiece == KING)
+    {
+        if (getSquare(x1, y1)->getColor() == WHITE)
+        {
+            cout << "\n WHITE wins.\n";
+            return false;
+        }
+        else
+        {
+            cout << "BLACK wins.\n";
+            return false;
+        }
+    }
+
+    //code to alternate turns b/w black & white
+    if (turn == BLACK)
+        turn = WHITE;
+    else
+        turn = BLACK;
+    return true;
 
 }
