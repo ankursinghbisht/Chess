@@ -78,7 +78,7 @@ void Board::printBoard()
                 cout << " \21 ";
                 break;
             default:
-                cout << "XXX";
+                cout << "Error in switch statement\n";
                 break;
             }
 
@@ -196,6 +196,55 @@ bool Board::playGame()
     return doMove();
 }
 
+bool Board::makeMove(int x1, int y1, int x2, int y2)
+{
+    //checking for any errors in co-ordinates by user and calling correspoding function if co-ordinates are valid
+
+    if (x1 < 0 || x1>7 || y1 < 0 || y1>7 || x2 < 0 || x2>7 || y2 < 0 || y2>7)
+    {
+        cout << "One of the co-ordinate values were out of bounds\n";
+        return false;
+    }
+    Square* source = getSquare(x1, y1);
+    Square* destination = getSquare(x2, y2);
+
+    if (source->getColor() == destination->getColor() && destination->getColor() != NONE)
+    {
+        cout << "Invalid Move, cannot land on your piece\n";
+        return false;
+    }
+
+    //after checking any errors, searching and calling for piece user requested to move
+    switch (source->getPiece())
+    {
+    case KING:
+        return moveKing(source, destination);
+        break;
+    case QUEEN:
+        return moveQueen(source, destination);
+        break;
+    case BISHOP:
+        return moveBishop(source, destination);
+        break;
+    case KNIGHT:
+        return moveKnight(source, destination);
+        break;
+    case ROOK:
+        return moveRook(source, destination);
+        break;
+    case PAWN:
+        return movePawn(source, destination);
+        break;
+    case EMPTY:
+        cout << "No piece is availabe at requested location\n";
+        break;
+
+    default:
+        cout << "Error in switch statement\n";
+        break;
+    }
+    return false;
+}
 
 //defining movements of each pieces individually
 
