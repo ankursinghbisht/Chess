@@ -280,3 +280,173 @@ bool Board::moveQueen(Square* thisQueen, Square* thatspace)
         return false;
 
 }
+
+bool Board::moveBishop(Square* thisBishop, Square* thatSpace)
+{
+    //checking if the path between initial and final position is clear for bishop to move
+    //bishop moves diagonally only according to chess rules.
+    int bishopX = thisBishop->getX();
+    int bishopY = thisBishop->getY();
+    int thatX = thatSpace->getX();
+    int thatY = thatSpace->getY();
+    bool invalid = false;
+
+    Square* s;
+
+    if (abs(bishopX - thatX) == abs(bishopY - thatY))
+    {
+        int xIncrement = (thatX - bishopX) / abs(bishopX - thatX);
+        int yIncrement = (thatY - bishopY) / abs(bishopY - thatY);
+
+        for (int i = 1;i < abs(bishopX - thatX);++i)
+        {
+            if (sq[bishopX + xIncrement * i][bishopY + yIncrement * i].getColor() != NONE)
+                return false;
+        }
+    }
+    else
+        return false;
+
+    if (invalid == false)
+    {
+        thatSpace->setEmpty(thisBishop);
+        thisBishop->setEmpty();
+        return true;
+    }
+    else
+        return false;
+}
+
+
+bool Board::moveKnight(Square* thisKight, Square* thatSpace)
+{
+    /*checking for movement of knight, as knights move in an “L-shape”—that is,
+    they can move two squares in any direction vertically followed by one square horizontally ,
+    or two squares in any direction horizontally followed by one square vertically*/
+
+    int knightX = thisKnight->getX();
+    int knightY = thisKnight->getY();
+    int thatX = thatSpace->getX();
+    int thatY = thatSpace->getY();
+
+    if ((abs(thatX - knightX) == 2 && abs(thatY - knightY) == 1) || (abs(thatX - knightX) == 1 && abs(thatY - knightY) == 2))
+    {
+        thatSpace->setSpace(thisKight);
+        thisKight->setEmpty();
+        return true;
+    }
+    else
+        return false;
+}
+
+
+bool Board::moveRook(Square* thisRook, Square* thatSpace)
+{
+    //checks if rook can move to entered location , by checking each tile in it's way step by step
+    //rook can only move in straigh lines, i.e. only horizontal or vertical axis at a time.
+
+    int rookX = thisRook->getX();
+    int rookY = thisRook->getY();
+    int thatX = thatSpace->getX();
+    int thatY = thatSpace->getY();
+    bool invalid = false;
+
+    if (rookX != thatX || thatY != rookY)
+    {
+        if (rookX == thatX)
+        {
+            int yIncrement = (thatY - rookY) / abs(rookY - thatY);
+            for (int i = rookY + yIncrement;i != thatY;i += yIncrement)
+            {
+                if (sq[thatX][a].getColor() != NONE)
+                    return false;
+            }
+        }
+        else
+        {
+            if (rookY == thatY)
+            {
+                int xIncrement = (thatX - rookX) / abs(rookX - thatX);
+                for (int i = rookX + xIncrement;i != thatX;i += xIncrement)
+                {
+                    if (sq[i][thaty].getColor() != NONE)
+                        return false;
+                }
+            }
+            else
+                return false;
+        }
+    }
+
+    if (invalid == false)
+    {
+        thatSpace->setSpace(thisRook);
+        thisRook->setEmpty();
+        return true;
+    }
+    else
+    {
+        cout << "\n Invalid move for rook\n";
+        return false;
+    }
+
+}
+
+bool Board::movePawn(Square* thisPawn, Square* thatSpace)
+{
+    //pawn has a movement of 1 step at a time, it can only move straight until blocked,
+    // & can attack diagonally single step ahead.
+
+    bool invalid = false;
+    int pawnX = thisPawn->getX();
+    int pawnY = thisPawn->getY();
+    int thatX = thatSpace->getX();
+    int thatY = thatSpace->getY();
+
+    if (thisPawn->getColor() == WHITE)
+    {
+        //this check is done to check if desired location is diagonal & a black piece is available to attack
+        if (pawnX == thatX && thatY == pawnY + 1 && thatSpace->getColor == NONE)
+        {
+            thatSpace->setSpace(thisPawn);
+            thisPawn->setEmpty();
+            return true;
+        }
+        else
+        {
+            if ((pawnX + 1 == thatX || pawnX - 1 == thatX) && pawnY + 1 == thatY && thatSpace->getColor() == BLACK)
+            {
+                thatSpace->setSpace(thisPawn);
+                thisPawn->setEmpty();
+                return true;
+            }
+            else
+                return false;
+        }
+    }
+    else if (thisPawn->getColor() == BLACK)
+    {
+        //this check is done to check if desired location is diagonal & a black piece is available to attack
+        if (pawnX == thatX && thatY == pawnY - 1 && thatSpace->getColor() == NONE)
+        {
+            thatSpace->setSpace(thisPawn);
+            thisPawn->setEmpty();
+            return true;
+        }
+        else
+        {
+            if ((pawnX + 1 == thatX || pawnX - 1 = thatX) && pawnY - 1 = thatY && thatSpace->getColor() == WHITE)
+            {
+                thatSpace->setSpace(thisPawn);
+                thisPawn->setEmpty();
+                return true;
+            }
+            else
+                return false;
+        }
+
+    }
+    else
+        return false;
+}
+
