@@ -93,6 +93,7 @@ bool Board::doMove()
 {
     int x1, x2, y1, y2;
     bool stop = false;
+    string s;
 
     if (turn == WHITE)
         cout << "\n   White's turn\n";
@@ -104,8 +105,18 @@ bool Board::doMove()
 
     while (!stop)
     {
-        cout << "\n\n\t\t\t";
-        cin >> x1 >> y1 >> x2 >> y2;
+        while (true)
+        {
+            cout << "\n\n\t\t\t";
+            getline(cin, s);
+
+            istringstream iss(s);
+            if (!(iss >> x1 >> y1 >> x2 >> y2)) {
+                cout << "   Invalid input. Please enter four numbers.\n";
+                continue;
+            }
+            break;
+        }
 
         if (getSquare(x1, y1)->getColor() == turn)
         {
