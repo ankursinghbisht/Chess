@@ -57,22 +57,22 @@ void Board::printBoard()
             switch (p)
             {
             case KING:
-                (c == WHITE) ? cout << "K" : cout << "k";
+                (c == WHITE) ? cout << " K " : cout << " k ";
                 break;
             case QUEEN:
-                (c == WHITE) ? cout << "Q" : cout << "q";
+                (c == WHITE) ? cout << " Q " : cout << " q ";
                 break;
             case BISHOP:
-                (c == WHITE) ? cout << "B" : cout << "b";
+                (c == WHITE) ? cout << " B " : cout << " b ";
                 break;
             case KNIGHT:
-                (c == WHITE) ? cout << "H" : cout << "h";
+                (c == WHITE) ? cout << " H " : cout << " h ";
                 break;
             case ROOK:
-                (c == WHITE) ? cout << "R" : cout << "r";
+                (c == WHITE) ? cout << " R " : cout << " r ";
                 break;
             case PAWN:
-                (c == WHITE) ? cout << "P" : cout << "p";
+                (c == WHITE) ? cout << " P " : cout << " p ";
                 break;
             case EMPTY:
                 cout << " \21 ";
@@ -118,7 +118,7 @@ bool Board::doMove()
 
     /*input is taken, and here we check if piece directly attacks the kingif yes, game is won by the attacker
     (this isn't acutal rule of chess, this is initial phase of testing of proper functioning of chess game.)*/
-    if (getSquare(x2, y2)->getPiece == KING)
+    if (getSquare(x2, y2)->getPiece() == KING)
     {
         if (getSquare(x1, y1)->getColor() == WHITE)
         {
@@ -146,28 +146,28 @@ bool Board::doMove()
 void Board::setBoard()
 {
     //Setting up white & black pieces
-    sq[0][0].setPieceAndColor(ROOK, WHITE);
-    sq[1][0].setPieceAndColor(KNIGHT, WHITE);
-    sq[2][0].setPieceAndColor(BISHOP, WHITE);
-    sq[3][0].setPieceAndColor(QUEEN, WHITE);
-    sq[4][0].setPieceAndColor(KING, WHITE);
-    sq[5][0].setPieceAndColor(BISHOP, WHITE);
-    sq[6][0].setPieceAndColor(KNIGHT, WHITE);
-    sq[7][0].setPieceAndColor(ROOK, WHITE);
+    sq[0][0].setpieceAndColor(ROOK, WHITE);
+    sq[1][0].setpieceAndColor(KNIGHT, WHITE);
+    sq[2][0].setpieceAndColor(BISHOP, WHITE);
+    sq[3][0].setpieceAndColor(QUEEN, WHITE);
+    sq[4][0].setpieceAndColor(KING, WHITE);
+    sq[5][0].setpieceAndColor(BISHOP, WHITE);
+    sq[6][0].setpieceAndColor(KNIGHT, WHITE);
+    sq[7][0].setpieceAndColor(ROOK, WHITE);
 
-    sq[0][7].setPieceAndColor(ROOK, BLACK);
-    sq[1][7].setPieceAndColor(KNIGHT, BLACK);
-    sq[2][7].setPieceAndColor(BISHOP, BLACK);
-    sq[3][7].setPieceAndColor(QUEEN, BLACK);
-    sq[4][7].setPieceAndColor(KING, BLACK);
-    sq[5][7].setPieceAndColor(BISHOP, BLACK);
-    sq[6][7].setPieceAndColor(KNIGHT, BLACK);
-    sq[7][7].setPieceAndColor(ROOK, BLACK);
+    sq[0][7].setpieceAndColor(ROOK, BLACK);
+    sq[1][7].setpieceAndColor(KNIGHT, BLACK);
+    sq[2][7].setpieceAndColor(BISHOP, BLACK);
+    sq[3][7].setpieceAndColor(QUEEN, BLACK);
+    sq[4][7].setpieceAndColor(KING, BLACK);
+    sq[5][7].setpieceAndColor(BISHOP, BLACK);
+    sq[6][7].setpieceAndColor(KNIGHT, BLACK);
+    sq[7][7].setpieceAndColor(ROOK, BLACK);
 
     for (int i = 0; i < 8; i++)
     {
-        sq[i][1].setPieceAndColor(PAWN, WHITE);
-        sq[i][6].setPieceAndColor(PAWN, BLACK);
+        sq[i][1].setpieceAndColor(PAWN, WHITE);
+        sq[i][6].setpieceAndColor(PAWN, BLACK);
     }
 
     //setting up empty spaces
@@ -272,16 +272,16 @@ bool Board::moveQueen(Square* thisQueen, Square* thatspace)
 {
     //it checks if position passed are valid position w.r.t to actual chess rules
     //ie. queen can move any number of positions  vertically, horizontally or diagonally unless path is obstructed. 
-    int queenX = thisQueen->getX(), queenY = thisQueen->getY(), thatX = thatSpace->getX(), thatY = thatSpace->getY();
-    int yIcrement, int xIncrement;
+    int queenX = thisQueen->getX(), queenY = thisQueen->getY(), thatX = thatspace->getX(), thatY = thatspace->getY();
+    int yIncrement, xIncrement;
 
     bool invalid = false;
     // this checks if queen is ordered to go in straight line in horizontal axis, 
     //then step by step moving queen and checking if path is clear, else returned false
     if (queenX != thatX || queenY != thatY)
     {
-        yIcrement = (thatY - queenY) / (abs(thatY - queenY));
-        for (int i = queenY + yIcrement;i != thatY;i += yIcrement)
+        yIncrement = (thatY - queenY) / (abs(thatY - queenY));
+        for (int i = queenY + yIncrement;i != thatY;i += yIncrement)
         {
             if (sq[thatX][i].getColor() != NONE)
                 return false;
@@ -292,26 +292,23 @@ bool Board::moveQueen(Square* thisQueen, Square* thatspace)
         //same check as above is done , but with vertical axis
         if (queenY == thatY)
         {
-            xIncrement = (thatX - queenX) / abs(thatX - queenX);
+            int xIncrement = (thatX - queenX) / abs(thatX - queenX);
             for (int i = queenX + xIncrement;i != thatX;i += xIncrement)
             {
                 if (sq[i][thatY].getColor() != NONE)
                     return false;
             }
         }
-        else
+        //path check is done for diagonal movements.
+        else if (abs(queenX - thatX) == abs(queenY - thatY))
         {
-            //path check is done for diagonal movements.
-            if (abs(queenX - thatX) == abs(queenY - thatY))
-            {
-                xIncrement = (thatX - queenX) / (abs(thatX - queenX));
-                yIncrement = (thatY - queenY) / (abs(thatY - queenY));
+            xIncrement = (thatX - queenX) / (abs(thatX - queenX));
+            yIncrement = (thatY - queenY) / (abs(thatY - queenY));
 
-                for (int i = 1;i < abs(queenX - thatX);++i)
-                {
-                    if (sq[queenX + xIncrement * i][queenY + yIcrement * i].getColor() != NONE)
-                        return false;
-                }
+            for (int i = 1;i < abs(queenX - thatX);++i)
+            {
+                if (sq[queenX + xIncrement * i][queenY + yIncrement * i].getColor() != NONE)
+                    return false;
             }
         }
         else
@@ -358,7 +355,7 @@ bool Board::moveBishop(Square* thisBishop, Square* thatSpace)
 
     if (invalid == false)
     {
-        thatSpace->setEmpty(thisBishop);
+        thatSpace->setSpace(thisBishop);
         thisBishop->setEmpty();
         return true;
     }
@@ -367,7 +364,7 @@ bool Board::moveBishop(Square* thisBishop, Square* thatSpace)
 }
 
 
-bool Board::moveKnight(Square* thisKight, Square* thatSpace)
+bool Board::moveKnight(Square* thisKnight, Square* thatSpace)
 {
     /*checking for movement of knight, as knights move in an “L-shape”—that is,
     they can move two squares in any direction vertically followed by one square horizontally ,
@@ -380,8 +377,8 @@ bool Board::moveKnight(Square* thisKight, Square* thatSpace)
 
     if ((abs(thatX - knightX) == 2 && abs(thatY - knightY) == 1) || (abs(thatX - knightX) == 1 && abs(thatY - knightY) == 2))
     {
-        thatSpace->setSpace(thisKight);
-        thisKight->setEmpty();
+        thatSpace->setSpace(thisKnight);
+        thisKnight->setEmpty();
         return true;
     }
     else
@@ -407,7 +404,7 @@ bool Board::moveRook(Square* thisRook, Square* thatSpace)
             int yIncrement = (thatY - rookY) / abs(rookY - thatY);
             for (int i = rookY + yIncrement;i != thatY;i += yIncrement)
             {
-                if (sq[thatX][a].getColor() != NONE)
+                if (sq[thatX][i].getColor() != NONE)
                     return false;
             }
         }
@@ -418,7 +415,7 @@ bool Board::moveRook(Square* thisRook, Square* thatSpace)
                 int xIncrement = (thatX - rookX) / abs(rookX - thatX);
                 for (int i = rookX + xIncrement;i != thatX;i += xIncrement)
                 {
-                    if (sq[i][thaty].getColor() != NONE)
+                    if (sq[i][thatY].getColor() != NONE)
                         return false;
                 }
             }
@@ -455,7 +452,7 @@ bool Board::movePawn(Square* thisPawn, Square* thatSpace)
     if (thisPawn->getColor() == WHITE)
     {
         //this check is done to check if desired location is diagonal & a black piece is available to attack
-        if (pawnX == thatX && thatY == pawnY + 1 && thatSpace->getColor == NONE)
+        if (pawnX == thatX && thatY == pawnY + 1 && thatSpace->getColor() == NONE)
         {
             thatSpace->setSpace(thisPawn);
             thisPawn->setEmpty();
@@ -484,7 +481,7 @@ bool Board::movePawn(Square* thisPawn, Square* thatSpace)
         }
         else
         {
-            if ((pawnX + 1 == thatX || pawnX - 1 = thatX) && pawnY - 1 = thatY && thatSpace->getColor() == WHITE)
+            if ((pawnX + 1 == thatX) || pawnX - 1 == thatX && pawnY - 1 == thatY && thatSpace->getColor() == WHITE)
             {
                 thatSpace->setSpace(thisPawn);
                 thisPawn->setEmpty();

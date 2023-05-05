@@ -18,7 +18,7 @@ class Square
     int x, y;
 
 public:
-
+    Square();
 
     void setSpace(Square*);
     void setEmpty();
@@ -77,4 +77,4 @@ public:
     void setBoard();
 
     bool playGame();
-}
+};
