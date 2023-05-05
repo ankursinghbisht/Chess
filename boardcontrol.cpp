@@ -44,7 +44,7 @@ void Square::setpieceAndColor(Piece p, Color c)
 
 void Board::printBoard()
 {
-    cout << "   y: 0  1  2  3  4  5  6  7 \n x:\n";
+    cout << "y: 0  1  2  3  4  5  6  7 \n x:\n";
 
     for (int i = 0;i < 8;++i)
     {
@@ -78,7 +78,7 @@ void Board::printBoard()
                 cout << " \21 ";
                 break;
             default:
-                cout << "Error in switch statement\n";
+                cout << "   Error in switch statement\n";
                 break;
             }
 
@@ -97,18 +97,18 @@ bool Board::doMove()
     while (!stop)
     {
         if (turn == WHITE)
-            cout << "White's turn\n";
+            cout << "   White's turn\n";
         else
-            cout << "Black's turn\n";
+            cout << "   Black's turn\n";
 
-        cout << "Type your move as 4 individual numbers consisting co-ordinates of Piece you want to move , following it's target location \n";
-        cout << "Example if a pawn is at location (0,1) & we want to move it to (0,2), type 0 1 0 2\n";
+        cout << "   Type your move as 4 individual numbers consisting co-ordinates of Piece you want to move,\n   following it's target location \n";
+        cout << "   Example if a pawn is at location (0,1) & we want to move it to (0,2), type 0 1 0 2\n";
         cin >> x1 >> y1 >> x2 >> y2;
 
         if (getSquare(x1, y1)->getColor() == turn)
         {
             if (makeMove(x1, y1, x2, y2) == false)
-                cout << "Invalid move, Try again.\n";
+                cout << "   Invalid move, Try again.\n";
             else
                 stop = true;
         }
@@ -122,12 +122,12 @@ bool Board::doMove()
     {
         if (getSquare(x1, y1)->getColor() == WHITE)
         {
-            cout << "\n WHITE wins.\n";
+            cout << "\n   WHITE wins.\n";
             return false;
         }
         else
         {
-            cout << "BLACK wins.\n";
+            cout << "\n   BLACK wins.\n";
             return false;
         }
     }
@@ -202,7 +202,7 @@ bool Board::makeMove(int x1, int y1, int x2, int y2)
 
     if (x1 < 0 || x1>7 || y1 < 0 || y1>7 || x2 < 0 || x2>7 || y2 < 0 || y2>7)
     {
-        cout << "One of the co-ordinate values were out of bounds\n";
+        cout << "   One of the co-ordinate values were out of bounds\n";
         return false;
     }
     Square* source = getSquare(x1, y1);
@@ -210,7 +210,7 @@ bool Board::makeMove(int x1, int y1, int x2, int y2)
 
     if (source->getColor() == destination->getColor() && destination->getColor() != NONE)
     {
-        cout << "Invalid Move, cannot land on your piece\n";
+        cout << "   Invalid Move, cannot land on your piece\n";
         return false;
     }
 
@@ -236,11 +236,11 @@ bool Board::makeMove(int x1, int y1, int x2, int y2)
         return movePawn(source, destination);
         break;
     case EMPTY:
-        cout << "No piece is availabe at requested location\n";
+        cout << "   No piece is availabe at requested location\n";
         break;
 
     default:
-        cout << "Error in switch statement\n";
+        cout << "   Error in switch statement\n";
         break;
     }
     return false;

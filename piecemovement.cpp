@@ -187,7 +187,7 @@ bool Board::moveRook(Square* thisRook, Square* thatSpace)
     }
     else
     {
-        cout << "\n Invalid move for rook\n";
+        cout << "\n   Invalid move for rook\n";
         return false;
     }
 
