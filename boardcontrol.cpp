@@ -44,11 +44,11 @@ void Square::setpieceAndColor(Piece p, Color c)
 
 void Board::printBoard()
 {
-    cout << "y: 0  1  2  3  4  5  6  7 \n x:\n";
+    cout << "\n\n\t\t\t y: 0  1  2  3  4  5  6  7 \n\t\t\t x:\n";
 
     for (int i = 0;i < 8;++i)
     {
-        cout << " " << i << " ";
+        cout << "\t\t\t " << i << " ";
         for (int j = 0;j < 8;++j)
         {
             Piece p = sq[i][j].getPiece();
@@ -94,15 +94,17 @@ bool Board::doMove()
     int x1, x2, y1, y2;
     bool stop = false;
 
+    if (turn == WHITE)
+        cout << "\n   White's turn\n";
+    else
+        cout << "\n   Black's turn\n";
+
+    cout << "\n\n   Type your move as 4 individual numbers consisting co-ordinates of Piece you want to move,\n   following it's target location \n";
+    cout << "   Example if a pawn is at location (0,1) & we want to move it to (0,2), type 0 1 0 2";
+
     while (!stop)
     {
-        if (turn == WHITE)
-            cout << "   White's turn\n";
-        else
-            cout << "   Black's turn\n";
-
-        cout << "   Type your move as 4 individual numbers consisting co-ordinates of Piece you want to move,\n   following it's target location \n";
-        cout << "   Example if a pawn is at location (0,1) & we want to move it to (0,2), type 0 1 0 2\n";
+        cout << "\n\n\t\t\t";
         cin >> x1 >> y1 >> x2 >> y2;
 
         if (getSquare(x1, y1)->getColor() == turn)
@@ -113,7 +115,7 @@ bool Board::doMove()
                 stop = true;
         }
         else
-            cout << "That's an invalid Piece to move. Please try again\n";
+            cout << "   That's an invalid Piece to move. Please try again\n";
     }
 
     /*input is taken, and here we check if piece directly attacks the kingif yes, game is won by the attacker
